@@ -1,0 +1,21 @@
+{
+  "signing": {
+    "profiles": {
+      "default": {
+        "auth_remote": {
+          "auth_key": "ca-auth"
+        },
+        "expiry": "8760h",
+        "usages": [
+          "any"
+        ]
+      }
+    }
+  },
+  "auth_keys": {
+    "ca-auth": {
+      "key": "<%= node['cfssl']['auth_key'] %>",
+      "type": "standard"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: debian-8.4
+
+suites:
+  - name: default
+    run_list:
+      - "recipe[chef-cfssl::default]"
+      - "recipe[chef-cfssl::install]"
+      - "recipe[chef-cfssl::gen_ca]"
+      - "recipe[chef-cfssl::server]"
+      - "recipe[chef-cfssl::gen_cert]"
+    attributes:
