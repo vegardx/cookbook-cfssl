@@ -21,8 +21,8 @@ execute "multirootca daemon-reload" do
   notifies :restart, "service[multirootca]", :immediately
 end
 
-template "#{node['cfssl']['config_path']}/conf/multiroot.json" do
-  source 'multiroot.json.erb'
+template "#{node['cfssl']['config_path']}/conf/multirootca.json" do
+  source 'multirootca.json.erb'
   owner 'root'
   group 'root'
   mode 00744

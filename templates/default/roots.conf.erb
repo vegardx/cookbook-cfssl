@@ -1,9 +1,6 @@
-[ rootca ]
-private = file:///etc/cfssl/ca/rootca-key.pem
-certificate = /etc/cfssl/ca/rootca.pem
-config = /etc/cfssl/conf/multiroot.json
-
-[ otherca ]
-private = file:///etc/cfssl/ca/otherca-key.pem
-certificate = /etc/cfssl/ca/otherca.pem
-config = /etc/cfssl/conf/multiroot.json
+<% node['cfssl']['ca'].each do |ca, val| %>
+[ <%= ca %> ]
+private = file:///etc/cfssl/ca/<%= ca %>-key.pem
+certificate = /etc/cfssl/ca/<%= ca %>.pem
+config = /etc/cfssl/conf/multirootca.json
+<% end %>

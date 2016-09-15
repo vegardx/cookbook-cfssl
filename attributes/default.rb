@@ -43,8 +43,35 @@ default['cfssl']['packages'] = {
   }
 }
 
+default['cfssl']['profiles'] = {
+  "primary" => {
+    "key" => "841C395BF335E3A165EBA00C4B12EDA3",
+    "type" => "standard",
+    "expiry" => "8760h",
+    "usages" => [
+      "any"
+    ]
+  },
+  "secondary" => {
+    "key" => "841C395BF335E3A165EBA00C4B12EDA3",
+    "type" => "standard",
+    "expiry" => "8760h",
+    "usages" => [
+      "any"
+    ]
+  },
+  "default" => {
+    "key" => "841C395BF335E3A165EBA00C4B12EDA3",
+    "type" => "standard",
+    "expiry" => "8760h",
+    "usages" => [
+      "any"
+    ]
+  }
+}
+
 default['cfssl']['ca'] = {
-  "rootca" => {
+  "default" => {
     "key_algorithm"     => "rsa",
     "key_size"          => "2048",
     "country"           => "NO",
@@ -54,7 +81,7 @@ default['cfssl']['ca'] = {
     "organization_unit" => "Department of Silly Walks",
     "ca_expire"         => "43800h"
   },
-  "otherca" => {
+  "secondary" => {
     "key_algorithm"     => "rsa",
     "key_size"          => "2048",
     "country"           => "NO",
@@ -68,6 +95,19 @@ default['cfssl']['ca'] = {
 
 default['cfssl']['cert'] = {
   "#{node['hostname']}" => {
+    "label"             => "default",
+    "profile"           => "primary",
+    "key_algorithm"     => "rsa",
+    "key_size"          => "2048",
+    "country"           => "NO",
+    "state"             => "Oslo",
+    "city"              => "Oslo",
+    "organization"      => "Acme Ltd.",
+    "organization_unit" => "Department of Silly Walks"
+  },
+  "#{node['hostname']}-test" => {
+    "label"             => "secondary",
+    "profile"           => "secondary",
     "key_algorithm"     => "rsa",
     "key_size"          => "2048",
     "country"           => "NO",

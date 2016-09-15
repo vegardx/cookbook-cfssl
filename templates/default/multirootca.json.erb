@@ -3,9 +3,7 @@
     "profiles": {
       <% node['cfssl']['profiles'].each_with_index do |(key, val), i| %>
       "<%= key %>": {
-        "auth_remote": {
-          "auth_key": "<%= key %>"
-        },
+        "auth_key": "<%= key %>",
         "expiry": "<%= val['expiry'] %>",
         "usages": <%= val['usages'] %>
       }<%= "," if i < (node['cfssl']['profiles'].size - 1) %>
