@@ -2,8 +2,9 @@
   "signing": {
     "profiles": {
       "<%= node['cfssl']['profile'] %>": {
-        "auth_key": "<%= node['cfssl']['auth_key']['name'] %>",
-        "remote": "localhost",
+        "auth_remote": {
+          "auth_key": "<%= node['cfssl']['auth_key']['name'] %>"
+        },
         "expiry": "<%= node['cfssl']['expire'] %>",
         "usages": [
           "any"
@@ -11,8 +12,9 @@
       }
     },
     "default": {
-      "auth_key": "<%= node['cfssl']['auth_key']['name'] %>",
-      "remote": "localhost",
+      "auth_remote": {
+        "auth_key": "<%= node['cfssl']['auth_key']['name'] %>"
+      },
       "expiry": "<%= node['cfssl']['expire'] %>",
       "usages": [
         "any"
@@ -24,8 +26,5 @@
       "key": "<%= node['cfssl']['auth_key']['key'] %>",
       "type": "standard"
     }
-  },
-  "remotes": {
-    "localhost": "127.0.0.1:8888"
   }
 }

@@ -32,7 +32,7 @@ node['cfssl']['packages'][arch].each do |pkg, crc|
     owner 'root'
     group 'root'
     checksum crc
-    notifies :create, "link[/usr/local/bin/#{pkg}]", :delayed
+    notifies :create, "link[/usr/local/bin/#{pkg}]", :immediately
   end
 
   link "/usr/local/bin/#{pkg}" do

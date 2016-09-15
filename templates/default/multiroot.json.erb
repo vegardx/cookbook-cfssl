@@ -1,0 +1,26 @@
+{
+  "signing": {
+    "profiles": {
+      "<%= node['cfssl']['profile'] %>": {
+        "auth_key": "<%= node['cfssl']['auth_key']['name'] %>",
+        "expiry": "<%= node['cfssl']['expire'] %>",
+        "usages": [
+          "any"
+        ]
+      }
+    },
+    "default": {
+      "auth_key": "<%= node['cfssl']['auth_key']['name'] %>",
+      "expiry": "<%= node['cfssl']['expire'] %>",
+      "usages": [
+        "any"
+      ]
+    }
+  },
+  "auth_keys": {
+    "<%= node['cfssl']['auth_key']['name'] %>": {
+      "key": "<%= node['cfssl']['auth_key']['key'] %>",
+      "type": "standard"
+    }
+  }
+}

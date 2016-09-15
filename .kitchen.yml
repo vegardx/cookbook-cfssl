@@ -15,5 +15,6 @@ suites:
       - "recipe[chef-cfssl::install]"
       - "recipe[chef-cfssl::gen_ca]"
       - "recipe[chef-cfssl::server]"
+      - "recipe[chef-cfssl::client]"
       - "recipe[chef-cfssl::gen_cert]"
     attributes:

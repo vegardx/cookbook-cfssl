@@ -1,0 +1,17 @@
+[Unit]
+Description=CloudFlare SSL Server Daemon
+After=network-online.target
+
+[Service]
+Type=simple
+User=<%= node['cfssl']['server']['user'] %>
+Group=<%= node['cfssl']['server']['group'] %>
+UMask=007
+ExecStart=<%= node['cfssl']['install_path'] %>/multirootca -loglevel=0 -a <%= node['cfssl']['server']['bind'] %>:<%= node['cfssl']['server']['port'] %> -roots /etc/cfssl/conf/roots.conf
+
+Restart=on-failure
+
+TimeoutStopSec=300
+
+[Install]
+WantedBy=multi-user.target
