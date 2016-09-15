@@ -23,14 +23,15 @@ directory node['cfssl']['config_path'] do
   action :create
 end
 
-node['cfssl']['packages'].each do |pkg|
+arch = node['cfssl']['arch']
 
+node['cfssl']['packages'][arch].each do |pkg, crc|
   remote_file "#{node['cfssl']['install_path']}/#{pkg}" do
     source "#{node['cfssl']['download_url']}/#{node['cfssl']['version']}/#{pkg}_#{node['os']}-#{node['cfssl']['arch']}"
     mode 00744
     owner 'root'
     group 'root'
-    checksum node['cfssl']['checksums'][node['cfssl']['arch']][pkg]
+    checksum crc
     notifies :create, "link[/usr/local/bin/#{pkg}]", :delayed
   end
 
@@ -38,5 +39,4 @@ node['cfssl']['packages'].each do |pkg|
     to "#{node['cfssl']['install_path']}/#{pkg}"
     action :nothing
   end
-
 end

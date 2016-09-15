@@ -1,21 +1,31 @@
 {
   "signing": {
     "profiles": {
-      "default": {
-        "auth_remote": {
-          "auth_key": "ca-auth"
-        },
-        "expiry": "8760h",
+      "<%= node['cfssl']['profile'] %>": {
+        "auth_key": "<%= node['cfssl']['auth_key']['name'] %>",
+        "remote": "localhost",
+        "expiry": "<%= node['cfssl']['expire'] %>",
         "usages": [
           "any"
         ]
       }
+    },
+    "default": {
+      "auth_key": "<%= node['cfssl']['auth_key']['name'] %>",
+      "remote": "localhost",
+      "expiry": "<%= node['cfssl']['expire'] %>",
+      "usages": [
+        "any"
+      ]
     }
   },
   "auth_keys": {
-    "ca-auth": {
-      "key": "<%= node['cfssl']['auth_key'] %>",
+    "<%= node['cfssl']['auth_key']['name'] %>": {
+      "key": "<%= node['cfssl']['auth_key']['key'] %>",
       "type": "standard"
     }
+  },
+  "remotes": {
+    "localhost": "127.0.0.1:8888"
   }
 }

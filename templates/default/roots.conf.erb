@@ -1,0 +1,9 @@
+[ rootca ]
+private = file:///etc/cfssl/ca/rootca-key.pem
+certificate = /etc/cfssl/ca/rootca.pem
+config = /etc/cfssl/conf/authsign.json
+
+[ otherca ]
+private = file:///etc/cfssl/ca/otherca-key.pem
+certificate = /etc/cfssl/ca/otherca.pem
+config = /etc/cfssl/conf/authsign.json

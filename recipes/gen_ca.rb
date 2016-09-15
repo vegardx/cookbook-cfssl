@@ -28,7 +28,7 @@ node['cfssl']['ca'].each do |key, val|
   end
 
   execute "gen_ca #{key}" do
-    command "cfssl gencert -initca #{node['cfssl']['config_path']}/conf/#{key}-csr.json | cfssljson -bare #{key}"
+    command "#{node['cfssl']['install_path']}/cfssl gencert -initca #{node['cfssl']['config_path']}/conf/#{key}-csr.json | #{node['cfssl']['install_path']}/cfssljson -bare #{key}"
     cwd "#{node['cfssl']['config_path']}/ca"
     action :nothing
   end

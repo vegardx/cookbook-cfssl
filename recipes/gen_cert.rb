@@ -28,9 +28,8 @@ node['cfssl']['cert'].each do |key, val|
   end
 
   execute "gen_cert #{key}" do
-    command "cfssl gencert -remote #{node['cfssl']['remote']['address']}:#{node['cfssl']['remote']['port']} -profile default -hostname #{node['hostname']} #{node['cfssl']['config_path']}/conf/#{key}-csr.json | cfssljson -bare #{key}"
+    command "#{node['cfssl']['install_path']}/cfssl gencert -remote #{node['cfssl']['remote']['address']}:#{node['cfssl']['remote']['port']} -config #{node['cfssl']['config_path']}/conf/authsign.json -label rootca -profile cert -hostname #{node['hostname']} #{node['cfssl']['config_path']}/conf/#{key}-csr.json | #{node['cfssl']['install_path']}/cfssljson -bare #{key}"
     cwd "#{node['cfssl']['config_path']}/cert"
     action :nothing
   end
-
 end
