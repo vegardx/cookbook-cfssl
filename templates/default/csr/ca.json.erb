@@ -12,11 +12,8 @@
       "O": "<%= @val['organization'] %>",
       "OU": "<%= @val['organization_unit'] %>"
     }
-  ]
-  <%- if @val['ca_expire'] -%>
-  ,
+  ],
   "ca": {
     "expiry": "<%= @val['ca_expire'] %>"
   }
-  <%- end -%>
 }

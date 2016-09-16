@@ -7,28 +7,49 @@
 # All rights reserved - Do Not Redistribute
 #
 
+user = node['cfssl']['service']['user']
+group = node['cfssl']['service']['group']
+
+user user do
+  system true
+  shell '/bin/false'
+  not_if "getent passwd #{user}"
+end
+
+group group do
+  not_if "getent group #{group}"
+end
+
 directory node['cfssl']['install_path'] do
   owner 'root'
   group 'root'
-  mode 00744
+  mode 00755
   recursive true
   action :create
 end
 
 directory node['cfssl']['config_path'] do
-  owner 'root'
-  group 'root'
-  mode 00744
+  owner node['cfssl']['service']['user']
+  group node['cfssl']['service']['group']
+  mode 00755
   recursive true
   action :create
 end
 
-arch = node['cfssl']['arch']
+%w{ conf cert csr }.each do |dir|
+  directory "#{node['cfssl']['config_path']}/#{dir}" do
+    owner node['cfssl']['service']['user']
+    group node['cfssl']['service']['group']
+    mode 00755
+    recursive true
+    action :create
+  end
+end
 
-node['cfssl']['packages'][arch].each do |pkg, crc|
+node['cfssl']['packages'][node['cfssl']['arch']].each do |pkg, crc|
   remote_file "#{node['cfssl']['install_path']}/#{pkg}" do
     source "#{node['cfssl']['download_url']}/#{node['cfssl']['version']}/#{pkg}_#{node['os']}-#{node['cfssl']['arch']}"
-    mode 00744
+    mode 00755
     owner 'root'
     group 'root'
     checksum crc

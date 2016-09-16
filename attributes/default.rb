@@ -3,22 +3,14 @@ default['cfssl']['version']           = "R1.2"
 default['cfssl']['arch']              = "amd64"
 default['cfssl']['install_path']      = "/opt/cfssl"
 default['cfssl']['config_path']       = "/etc/cfssl"
-default['cfssl']['expire']            = "8760h"
-default['cfssl']['profile']           = "cert"
-default['cfssl']['auth_key']['name']  = "ca-auth"
-default['cfssl']['auth_key']['key']   = "841C395BF335E3A165EBA00C4B12EDA3"
+default['cfssl']['service']['user']   = "cfssl"
+default['cfssl']['service']['group']  = "cfssl"
+default['cfssl']['server']['bind']    = "0.0.0.0"
+default['cfssl']['server']['port']    = "8887"
+default['cfssl']['client']['bind']    = "127.0.0.1"
+default['cfssl']['client']['port']    = "8888"
 
-default['cfssl']['server']['user']   = "root"
-default['cfssl']['server']['group']  = "root"
-default['cfssl']['server']['bind']   = "0.0.0.0"
-default['cfssl']['server']['port']   = "8887"
-
-default['cfssl']['client']['user']   = "root"
-default['cfssl']['client']['group']  = "root"
-default['cfssl']['client']['bind']   = "127.0.0.1"
-default['cfssl']['client']['port']   = "8888"
-
-# Multiroot remote
+# Multiroot remote, to be replaced by search
 default['cfssl']['remote']['address'] = "127.0.0.1"
 default['cfssl']['remote']['port']    = "8887"
 
@@ -97,6 +89,7 @@ default['cfssl']['cert'] = {
   "#{node['hostname']}" => {
     "label"             => "default",
     "profile"           => "primary",
+    "hosts"             => [""],
     "key_algorithm"     => "rsa",
     "key_size"          => "2048",
     "country"           => "NO",
@@ -108,6 +101,7 @@ default['cfssl']['cert'] = {
   "#{node['hostname']}-test" => {
     "label"             => "secondary",
     "profile"           => "secondary",
+    "hosts"             => ["localhost", "127.0.0.1"],
     "key_algorithm"     => "rsa",
     "key_size"          => "2048",
     "country"           => "NO",

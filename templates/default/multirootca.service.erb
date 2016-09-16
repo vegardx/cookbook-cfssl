@@ -4,8 +4,8 @@ After=network-online.target
 
 [Service]
 Type=simple
-User=<%= node['cfssl']['server']['user'] %>
-Group=<%= node['cfssl']['server']['group'] %>
+User=<%= node['cfssl']['service']['user'] %>
+Group=<%= node['cfssl']['service']['group'] %>
 UMask=007
 ExecStart=<%= node['cfssl']['install_path'] %>/multirootca -loglevel=0 -a <%= node['cfssl']['server']['bind'] %>:<%= node['cfssl']['server']['port'] %> -roots /etc/cfssl/conf/roots.conf
 

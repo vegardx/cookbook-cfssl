@@ -11,7 +11,7 @@ template '/etc/systemd/system/multirootca.service' do
   source 'multirootca.service.erb'
   owner 'root'
   group 'root'
-  mode 00744
+  mode 00755
   notifies :run, "execute[multirootca daemon-reload]", :immediately
 end
 
@@ -23,17 +23,17 @@ end
 
 template "#{node['cfssl']['config_path']}/conf/multirootca.json" do
   source 'multirootca.json.erb'
-  owner 'root'
-  group 'root'
-  mode 00744
+  owner node['cfssl']['service']['user']
+  group node['cfssl']['service']['group']
+  mode 00755
   notifies :restart, "service[multirootca]", :immediately
 end
 
 template "#{node['cfssl']['config_path']}/conf/roots.conf" do
   source 'roots.conf.erb'
-  owner 'root'
-  group 'root'
-  mode 00744
+  owner node['cfssl']['service']['user']
+  group node['cfssl']['service']['group']
+  mode 00755
   notifies :restart, "service[multirootca]", :immediately
 end
 

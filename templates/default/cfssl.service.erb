@@ -4,8 +4,8 @@ After=network-online.target
 
 [Service]
 Type=simple
-User=<%= node['cfssl']['client']['user'] %>
-Group=<%= node['cfssl']['client']['group'] %>
+User=<%= node['cfssl']['service']['user'] %>
+Group=<%= node['cfssl']['service']['group'] %>
 UMask=007
 ExecStart=<%= node['cfssl']['install_path'] %>/cfssl serve -address <%= node['cfssl']['client']['bind'] %> -port <%= node['cfssl']['client']['port'] %> -remote <%= node['cfssl']['remote']['address'] %>:<%= node['cfssl']['remote']['port'] %> -config <%= node['cfssl']['config_path'] %>/conf/cfssl.json
 

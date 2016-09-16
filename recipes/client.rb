@@ -11,7 +11,7 @@ template '/etc/systemd/system/cfssl.service' do
   source 'cfssl.service.erb'
   owner 'root'
   group 'root'
-  mode 00744
+  mode 00755
   notifies :run, "execute[cfssl daemon-reload]", :immediately
 end
 
@@ -22,9 +22,9 @@ end
 
 template "#{node['cfssl']['config_path']}/conf/cfssl.json" do
   source 'cfssl.json.erb'
-  owner 'root'
-  group 'root'
-  mode 00744
+  owner node['cfssl']['service']['user']
+  group node['cfssl']['service']['group']
+  mode 00755
   notifies :restart, "service[cfssl]", :immediately
 end
 
