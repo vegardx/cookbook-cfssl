@@ -11,7 +11,7 @@ default['cfssl']['client']['bind']    = "127.0.0.1"
 default['cfssl']['client']['port']    = "8888"
 
 # Multiroot remote, to be replaced by search
-default['cfssl']['remote']['address'] = "127.0.0.1"
+default['cfssl']['remote']['address'] = "chef.netwerk.io"
 default['cfssl']['remote']['port']    = "8887"
 
 
@@ -36,23 +36,7 @@ default['cfssl']['packages'] = {
 }
 
 default['cfssl']['profiles'] = {
-  "primary" => {
-    "key" => "841C395BF335E3A165EBA00C4B12EDA3",
-    "type" => "standard",
-    "expiry" => "8760h",
-    "usages" => [
-      "any"
-    ]
-  },
-  "secondary" => {
-    "key" => "841C395BF335E3A165EBA00C4B12EDA3",
-    "type" => "standard",
-    "expiry" => "8760h",
-    "usages" => [
-      "any"
-    ]
-  },
-  "default" => {
+  "netwerk" => {
     "key" => "841C395BF335E3A165EBA00C4B12EDA3",
     "type" => "standard",
     "expiry" => "8760h",
@@ -63,17 +47,7 @@ default['cfssl']['profiles'] = {
 }
 
 default['cfssl']['ca'] = {
-  "default" => {
-    "key_algorithm"     => "rsa",
-    "key_size"          => "2048",
-    "country"           => "NO",
-    "state"             => "Oslo",
-    "city"              => "Oslo",
-    "organization"      => "Acme Ltd.",
-    "organization_unit" => "Department of Silly Walks",
-    "ca_expire"         => "43800h"
-  },
-  "secondary" => {
+  "netwerk" => {
     "key_algorithm"     => "rsa",
     "key_size"          => "2048",
     "country"           => "NO",
@@ -88,20 +62,8 @@ default['cfssl']['ca'] = {
 default['cfssl']['cert'] = {
   "#{node['hostname']}" => {
     "label"             => "default",
-    "profile"           => "primary",
+    "profile"           => "netwerk",
     "hosts"             => [""],
-    "key_algorithm"     => "rsa",
-    "key_size"          => "2048",
-    "country"           => "NO",
-    "state"             => "Oslo",
-    "city"              => "Oslo",
-    "organization"      => "Acme Ltd.",
-    "organization_unit" => "Department of Silly Walks"
-  },
-  "#{node['hostname']}-test" => {
-    "label"             => "secondary",
-    "profile"           => "secondary",
-    "hosts"             => ["localhost", "127.0.0.1"],
     "key_algorithm"     => "rsa",
     "key_size"          => "2048",
     "country"           => "NO",
