@@ -7,6 +7,13 @@
 # All rights reserved - Do Not Redistribute
 #
 
+template "#{node['cfssl']['config_path']}/conf/cfssl.json" do
+  source 'cfssl.json.erb'
+  owner node['cfssl']['service']['user']
+  group node['cfssl']['service']['group']
+  mode 00755
+end
+
 node['cfssl']['cert'].each do |key, val|
   template "#{node['cfssl']['config_path']}/csr/#{key}.json" do
     source 'csr/cert.json.erb'

@@ -7,18 +7,12 @@
 # All rights reserved - Do Not Redistribute
 #
 
-user = node['cfssl']['service']['user']
-group = node['cfssl']['service']['group']
-
-user user do
+user node['cfssl']['service']['user'] do
   system true
   shell '/bin/false'
-  not_if "getent passwd #{user}"
 end
 
-group group do
-  not_if "getent group #{group}"
-end
+group node['cfssl']['service']['group']
 
 directory node['cfssl']['install_path'] do
   owner 'root'

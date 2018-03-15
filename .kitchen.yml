@@ -6,15 +6,15 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: debian-8.4
+  - name: debian-9.1
 
 suites:
   - name: default
     run_list:
-      - "recipe[chef-cfssl::default]"
-      - "recipe[chef-cfssl::install]"
-      - "recipe[chef-cfssl::gen_ca]"
-      - "recipe[chef-cfssl::server]"
-      - "recipe[chef-cfssl::client]"
-      - "recipe[chef-cfssl::gen_cert]"
+      - "recipe[cfssl::default]"
+      - "recipe[cfssl::install]"
+      - "recipe[cfssl::gen_ca]"
+      - "recipe[cfssl::server]"
+      # - "recipe[cfssl::client]"
+      - "recipe[cfssl::gen_cert]"
     attributes:

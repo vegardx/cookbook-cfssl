@@ -13,6 +13,7 @@ template '/etc/systemd/system/multirootca.service' do
   group 'root'
   mode 00755
   notifies :run, "execute[multirootca daemon-reload]", :immediately
+  notifies :restart, "service[multirootca]", :immediately
 end
 
 execute "multirootca daemon-reload" do
@@ -38,6 +39,6 @@ template "#{node['cfssl']['config_path']}/conf/roots.conf" do
 end
 
 service 'multirootca' do
-  supports :start => true, :restart => true
+  supports :start => true
   action [ :enable, :start ]
 end

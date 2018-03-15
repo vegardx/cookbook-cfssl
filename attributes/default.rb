@@ -86,7 +86,7 @@ default['cfssl']['ca'] = {
 }
 
 default['cfssl']['cert'] = {
-  "#{node['hostname']}" => {
+  "#{node['hostname']}-default" => {
     "label"             => "default",
     "profile"           => "primary",
     "hosts"             => [""],
@@ -98,7 +98,7 @@ default['cfssl']['cert'] = {
     "organization"      => "Acme Ltd.",
     "organization_unit" => "Department of Silly Walks"
   },
-  "#{node['hostname']}-test" => {
+  "#{node['hostname']}-secondary" => {
     "label"             => "secondary",
     "profile"           => "secondary",
     "hosts"             => ["localhost", "127.0.0.1"],

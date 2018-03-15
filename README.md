@@ -5,7 +5,13 @@ Installs and configures cfssl as both a client and server. Heavily inspired from
 
 *Probably not working yet.*
 
-## Supported Platforms
+## Depends
+- aws
 
-- Debian 8
+## Intro
+Cookbook to distribute short lived certificates. Using Parameter Store for secure introduction of authentication key and
+storage of CA keys.
+
+## Supported Platforms
+- Debian 9
 - Ubuntu 16.04 (probably)
