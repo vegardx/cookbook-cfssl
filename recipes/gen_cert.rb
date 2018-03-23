@@ -18,11 +18,24 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-template "#{node['cfssl']['config_path']}/conf/cfssl.json" do
-  source 'cfssl.json.erb'
-  owner node['cfssl']['service']['user']
-  group node['cfssl']['service']['group']
-  mode 00755
+%w{ conf/client }.each do |dir|
+  directory "#{node['cfssl']['config_path']}/#{dir}" do
+    owner node['cfssl']['service']['user']
+    group node['cfssl']['service']['group']
+    mode 00755
+    recursive true
+    action :create
+  end
+end
+
+node['cfssl']['client']['profiles'].each do |key, val|
+  file "#{node['cfssl']['config_path']}/conf/client/#{key}.json" do
+    content val.to_json
+    owner node['cfssl']['service']['user']
+    group node['cfssl']['service']['group']
+    mode 00755
+    action :create
+  end
 end
 
 node['cfssl']['cert'].each do |key, val|
@@ -36,8 +49,15 @@ node['cfssl']['cert'].each do |key, val|
   end
 
   execute "gen_cert #{key}" do
-    command "#{node['cfssl']['install_path']}/cfssl gencert -remote #{node['cfssl']['remote']['address']}:#{node['cfssl']['remote']['port']} -config #{node['cfssl']['config_path']}/conf/cfssl.json -label #{val['label']} -profile #{val['profile']} #{node['cfssl']['config_path']}/csr/#{key}.json | #{node['cfssl']['install_path']}/cfssljson -bare #{key}"
+    command "#{node['cfssl']['install_path']}/cfssl gencert -remote #{node['cfssl']['remote']['address']}:#{node['cfssl']['remote']['port']} -config #{node['cfssl']['config_path']}/conf/client/#{val['label']}.json -label #{val['label']} -profile #{val['profile']} #{node['cfssl']['config_path']}/csr/#{key}.json | #{node['cfssl']['install_path']}/cfssljson -bare #{key}"
     cwd "#{node['cfssl']['config_path']}/cert"
     action :nothing
+  end
+
+  execute "update_cert #{key}" do
+    command "#{node['cfssl']['install_path']}/cfssl gencert -remote #{node['cfssl']['remote']['address']}:#{node['cfssl']['remote']['port']} -config #{node['cfssl']['config_path']}/conf/client/#{val['label']}.json -label #{val['label']} -profile #{val['profile']} #{node['cfssl']['config_path']}/csr/#{key}.json | #{node['cfssl']['install_path']}/cfssljson -bare #{key}"
+    cwd "#{node['cfssl']['config_path']}/cert"
+    action :run
+    not_if "openssl x509 -checkend 3600 -noout -in #{node['cfssl']['config_path']}/cert/#{key}.pem"
   end
 end

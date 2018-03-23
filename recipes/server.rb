@@ -33,15 +33,18 @@ execute "multirootca daemon-reload" do
   notifies :restart, "service[multirootca]", :immediately
 end
 
-template "#{node['cfssl']['config_path']}/conf/multirootca.json" do
-  source 'multirootca.json.erb'
-  owner node['cfssl']['service']['user']
-  group node['cfssl']['service']['group']
-  mode 00755
-  notifies :restart, "service[multirootca]", :immediately
+node['cfssl']['server']['profiles'].each do |key, val|
+  file "#{node['cfssl']['config_path']}/conf/server/#{key}.json" do
+    content val.to_json
+    owner node['cfssl']['service']['user']
+    group node['cfssl']['service']['group']
+    mode 00755
+    action :create
+    notifies :restart, "service[multirootca]", :immediately
+  end
 end
 
-template "#{node['cfssl']['config_path']}/conf/roots.conf" do
+template "#{node['cfssl']['config_path']}/conf/server/roots.conf" do
   source 'roots.conf.erb'
   owner node['cfssl']['service']['user']
   group node['cfssl']['service']['group']

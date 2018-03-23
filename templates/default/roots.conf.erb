@@ -2,5 +2,5 @@
 [ <%= ca %> ]
 private = file:///etc/cfssl/ca/<%= ca %>-key.pem
 certificate = /etc/cfssl/ca/<%= ca %>.pem
-config = /etc/cfssl/conf/multirootca.json
+config = /etc/cfssl/conf/server/<%= ca %>.json
 <% end %>

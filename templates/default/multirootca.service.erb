@@ -7,7 +7,7 @@ Type=simple
 User=<%= node['cfssl']['service']['user'] %>
 Group=<%= node['cfssl']['service']['group'] %>
 UMask=007
-ExecStart=<%= node['cfssl']['install_path'] %>/multirootca -loglevel=5 -a <%= node['cfssl']['server']['bind'] %>:<%= node['cfssl']['server']['port'] %> -roots /etc/cfssl/conf/roots.conf
+ExecStart=<%= node['cfssl']['install_path'] %>/multirootca -loglevel=5 -a <%= node['cfssl']['server']['bind'] %>:<%= node['cfssl']['server']['port'] %> -roots <%= node['cfssl']['config_path'] %>/conf/server/roots.conf
 
 Restart=on-failure
 

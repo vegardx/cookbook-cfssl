@@ -18,7 +18,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-%w{ ca }.each do |dir|
+%w{ ca conf/server }.each do |dir|
   directory "#{node['cfssl']['config_path']}/#{dir}" do
     owner node['cfssl']['service']['user']
     group node['cfssl']['service']['group']

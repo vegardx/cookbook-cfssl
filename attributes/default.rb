@@ -9,9 +9,10 @@ default['cfssl']['server']['bind']    = "0.0.0.0"
 default['cfssl']['server']['port']    = "8887"
 default['cfssl']['client']['bind']    = "127.0.0.1"
 default['cfssl']['client']['port']    = "8888"
+default['cfssl']['ssm']['path']       = "cfssl"
 
-# Multiroot remote, to be replaced by search
-default['cfssl']['remote']['address'] = "chef.netwerk.io"
+# Multiroot remote
+default['cfssl']['remote']['address'] = "test-pki.test.speedygonzales.io"
 default['cfssl']['remote']['port']    = "8887"
 
 
@@ -35,21 +36,55 @@ default['cfssl']['packages'] = {
   }
 }
 
-default['cfssl']['profiles'] = {
+# Default profile, everyone in Chef is assumed to have access to this auth_key.
+default['cfssl']['server']['profiles'] = {
   "netwerk" => {
-    "key" => "841C395BF335E3A165EBA00C4B12EDA3",
-    "type" => "standard",
-    "expiry" => "8760h",
-    "usages" => [
-      "any"
-    ]
+    "signing" => {
+      "profiles" => {
+        "netwerk" => {
+          "auth_key" => "netwerk",
+          "expiry" => "4h",
+          "usages" => ["any"]
+        }
+      }
+    },
+    "auth_keys" => {
+      "netwerk" => {
+        "key" => "841C395BF335E3A165EBA00C4B12EDA3",
+        "type" => "standard"
+      }
+    }
   }
 }
 
+default['cfssl']['client']['profiles'] = {
+  "netwerk" => {
+    "signing" => {
+      "profiles" => {
+        "netwerk" => {
+          "auth_remote" => {
+            "auth_key" => "netwerk"
+          },
+          "expiry" => "4h",
+          "usages" => ["any"]
+        }
+      }
+    },
+    "auth_keys" => {
+      "netwerk" => {
+        "key" => "841C395BF335E3A165EBA00C4B12EDA3",
+        "type" => "standard"
+      }
+    }
+  }
+}
+
+# Intermediate certificates are signed manually with Root CA.
 default['cfssl']['ca'] = {
   "netwerk" => {
-    "key_algorithm"     => "rsa",
-    "key_size"          => "2048",
+    "cn"                => "Netwerk Intermediate CA ECDSA-256 X1",
+    "key_algorithm"     => "ecdsa",
+    "key_size"          => "256",
     "country"           => "NO",
     "state"             => "Oslo",
     "city"              => "Oslo",
@@ -59,13 +94,14 @@ default['cfssl']['ca'] = {
   }
 }
 
+# Default certificate, installed on all hosts
 default['cfssl']['cert'] = {
-  "#{node['hostname']}-default" => {
-    "label"             => "default",
-    "profile"           => "netwerk",
+  "#{node['hostname']}-ecdsa-default" => {
+    "label"             => "netwerk", # Which CA to use
+    "profile"           => "netwerk", # What certificate to request
     "hosts"             => [""],
-    "key_algorithm"     => "rsa",
-    "key_size"          => "2048",
+    "key_algorithm"     => "ecdsa",
+    "key_size"          => "256",
     "country"           => "NO",
     "state"             => "Oslo",
     "city"              => "Oslo",
